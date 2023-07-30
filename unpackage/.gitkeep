@@ -1,0 +1,2 @@
+# 注意：由于我们忽略了 unpackage 目录中仅有的 dist 目录，因此默认情况下， unpackage 目录不会被 Git 追踪
+# 此时，为了让 Git 能够正常追踪 unpackage 目录，按照惯例，我们可以在 unpackage 目录下创建一个叫做 .gitkeep 的文件进行占位
