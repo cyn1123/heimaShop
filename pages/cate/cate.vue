@@ -1,5 +1,7 @@
 <template>
 	<view>
+		<my-search @click="gotoSearch"></my-search>
+		
 		<view class="container">
 			<scroll-view scroll-y="true" :style="{height: wh + 'px'}" class="left">
 				<view v-for="(item,index) in cateList" :key="index" :class="active === index ? 'active': ''" @click="activeChange(index)">{{ item.cat_name }}</view>
@@ -37,7 +39,7 @@
 		onLoad() {
 		  // 获取设备信息
 		  const systemInfo = uni.getSystemInfoSync()
-		  this.wh = systemInfo.windowHeight
+		  this.wh = systemInfo.windowHeight - 50
 		  // 调用获取分类列表数据的方法
 		  this.getCateList()
 		},
@@ -58,6 +60,11 @@
 			gotoGoods(id) {
 				uni.navigateTo({
 					url: '/subpkg/goods_list/goods_list?cid=' + id
+				})
+			},
+			gotoSearch(){
+				uni.navigateTo({
+					url: '/subpkg/search/search'
 				})
 			}
 		}
