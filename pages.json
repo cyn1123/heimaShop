@@ -39,6 +39,7 @@
                     "path" : "goods_detail/goods_detail",
                     "style" :                                                                                    
                 {
+					"navigationBarTitleText": "goods_detail",
                     "enablePullDownRefresh": false
                 }
                 
@@ -47,7 +48,9 @@
                     "path" : "goods_list/goods_list",
                     "style" :                                                                                    
                 {
-                    "enablePullDownRefresh": false
+					"navigationBarTitleText": "goods_list",
+                    "enablePullDownRefresh": true,
+					"backgroundColor": "#f8f8f8"
                 }
                 
                 }
@@ -55,7 +58,6 @@
                     "path" : "search/search",
                     "style" :                                                                                    
                 {
-                    "navigationBarTitleText": "",
                     "enablePullDownRefresh": false
                 }
                 
