@@ -51,7 +51,8 @@
 		  // 分类的数据列表
 		  navList: [],
 		  // 楼层列表
-		  floorList: []
+		  floorList: [],
+		  
 	    }
 	  },
 	  onLoad() {
