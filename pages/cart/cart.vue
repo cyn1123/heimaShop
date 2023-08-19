@@ -66,7 +66,7 @@
 				</view>
 				
 				<view class="btn">
-					<button>结算({{total}})</button>
+					<button @click="getMoney">结算({{total}})</button>
 				</view>
 			</view>
 		</view>
@@ -95,12 +95,15 @@
 								backgroundColor: '#c00000'
 							}
 						}],
+				seconds: 3,
+				timer: null
 			};
 		},
 		computed: {
 			...mapState('m_cart', ['cart']),
 			...mapGetters('m_cart', ['total']),
 			...mapState('my_address', ['address']),
+			...mapState('m_user', ['token']),
 			price(){
 				let sum = 0
 				this.cart.forEach((item)=>{
@@ -137,7 +140,8 @@
 				this.setBadge()
 			},
 			...mapMutations('m_cart', ['saveToStorage', 'deleteFromCart']),
-			...mapMutations('my_address', ['saveToStorage', 'addToAddress']),
+			...mapMutations('my_address', ['addToAddress']),
+			...mapMutations('m_user', ['addToRedi']),
 			changeValue(index,e){
 				this.cart[index].goods_count = e
 				this.saveToStorage(this.cart)
@@ -158,7 +162,6 @@
 				this.setBadge()
 			},
 			deleteGoods(id){
-				console.log(id);
 				this.deleteFromCart(id)
 			},
 			chooseAddress() {
@@ -174,6 +177,68 @@
 					},
 					fail(res) {
 						console.log(res);
+					}
+				})
+			},
+			getMoney() {
+				const re = this.cart.every(item=>item.goods_state===false)
+				if(re) {
+					return uni.showMessage('请选择需要结算的商品!')
+				}
+				if(JSON.stringify(this.address)==='{}') {
+					return uni.showMessage('请选择收货地址!')
+				}
+				if(!this.token) {
+					// return uni.showMessage('请先登录!')
+					return this.delaylogin()
+				}
+				
+				// 4. 实现微信支付功能
+				  this.payOrder()
+			},
+			delaylogin() {
+				this.seconds = 3
+				this.showTip(this.seconds)
+				this.timer = setInterval(()=>{
+					this.seconds --
+					if(this.seconds <= 0) {
+						clearInterval(this.timer)
+						uni.switchTab({
+							url: '/pages/my/my',
+							success: ()=>{
+								this.addToRedi({
+									from: '/pages/cart/cart',
+									opentype: 'switchTab'
+								})
+							}
+						})
+						return
+					}
+					this.showTip(this.seconds)
+				},1000)
+			},
+			showTip(n) {
+				uni.showToast({
+					// 不展示任何图标
+					icon: 'none',
+					// 提示的消息
+					title: '请登录后再结算！' + n + ' 秒后自动跳转到登录页',
+					// 为页面添加透明遮罩，防止点击穿透
+					mask: true,
+					// 1.5 秒后自动消失
+					duration: 1500
+				})
+			},
+			payOrder() {
+				const goods = this.cart.filter(x=>x.goods_state)
+				uni.showModal({
+					title:'提示',
+					content:'支付成功!',
+					success: ()=>{
+						goods.forEach((item)=>{
+							this.deleteGoods(item.goods_id)
+							this.setBadge()
+						})
 					}
 				})
 			}

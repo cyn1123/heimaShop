@@ -12,11 +12,11 @@ export default {
   mutations: {
 	  addToAddress(state, address) {
 		  state.address = address
-			   this.commit('my_address/saveToStorage')
+		  this.commit('my_address/saveToStorage')
 	      },
-		  saveToStorage(state) {
-		     uni.setStorageSync('address', JSON.stringify(state.address))
-		  }
+	  saveToStorage(state) {
+		 uni.setStorageSync('address', JSON.stringify(state.address))
+	  }
   },
 
   // 模块的 getters 属性

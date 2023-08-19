@@ -84,7 +84,6 @@
 	  // },
 	  getSwiperList(){
 		  uni.$http.get('/api/public/v1/home/swiperdata').then((res)=>{
-			  console.log(res.data.message);
 			  if(res.data.meta.status != 200) return uni.showMessage()
 			  this.swiperList = res.data.message
 			  uni.showMessage('请求数据完成!')
